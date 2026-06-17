@@ -28,6 +28,7 @@ function Login() {
           password: formData.password,
         }
       );
+     
 
       localStorage.setItem(
         "access",
@@ -38,6 +39,30 @@ function Login() {
         "refresh",
         response.data.refresh
       );
+      console.log("TOKEN RESPONSE =", JSON.stringify(response.data));
+console.log("ACCESS =", response.data.access);
+console.log("REFRESH =", response.data.refresh);
+
+localStorage.setItem(
+  "access",
+  response.data.access
+);
+
+localStorage.setItem(
+  "refresh",
+  response.data.refresh
+);
+
+console.log(
+  "Saved Access:",
+  localStorage.getItem("access")
+);
+
+console.log(
+  "Saved Refresh:",
+  localStorage.getItem("refresh")
+);
+      
 
       const userResponse = await axios.get(
         "https://finloan-pro-backend.onrender.com/api/me/",
@@ -48,7 +73,8 @@ function Login() {
         }
       );
 
-      console.log(userResponse.data);
+      console.log("USER RESPONSE");
+console.log(userResponse.data);
 
       localStorage.setItem(
         "role",

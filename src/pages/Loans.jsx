@@ -1,11 +1,33 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import LoanTable from "../components/LoanTable";
-import { useSelector } from "react-redux";
 
 function Loans() {
-  const loans = useSelector(
-    (state) => state.loan.loans
-  );
+  const [loans, setLoans] = useState([]);
+
+  useEffect(() => {
+    fetchLoans();
+  }, []);
+
+  const fetchLoans = async () => {
+    try {
+      const token = localStorage.getItem("access");
+
+      const response = await axios.get(
+        "https://finloan-pro-backend.onrender.com/api/loans/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setLoans(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-100">
