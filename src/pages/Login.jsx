@@ -39,9 +39,37 @@ function Login() {
         response.data.refresh
       );
 
-      alert("Login Successful");
+      localStorage.setItem(
+  "access",
+  response.data.access
+);
 
-      navigate("/dashboard");
+localStorage.setItem(
+  "refresh",
+  response.data.refresh
+);
+
+const userResponse = await axios.get(
+  "https://finloan-pro-backend.onrender.com/api/me/",
+  {
+    headers: {
+      Authorization: `Bearer ${response.data.access}`,
+    },
+  }
+);
+
+localStorage.setItem(
+  "role",
+  userResponse.data.role
+);
+
+alert("Login Successful");
+
+if (userResponse.data.role === "admin") {
+  navigate("/admin");
+} else {
+  navigate("/dashboard");
+}
     } catch (error) {
       alert("Invalid Credentials");
       console.log(error);

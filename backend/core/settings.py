@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'loans',
 ]
+AUTH_USER_MODEL = "accounts.User"
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
