@@ -55,6 +55,11 @@ function Login() {
         userResponse.data.role
       );
 
+      localStorage.setItem(
+  "username",
+  userResponse.data.username
+);
+
       alert("Login Successful");
 
       if (userResponse.data.role === "admin") {

@@ -2,6 +2,14 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
 function Profile() {
+  const username =
+    localStorage.getItem("username") ||
+    "User";
+
+  const role =
+    localStorage.getItem("role") ||
+    "customer";
+
   return (
     <div className="flex min-h-screen bg-slate-100">
       <Sidebar />
@@ -16,12 +24,12 @@ function Profile() {
         <div className="bg-white p-8 rounded-xl shadow max-w-2xl">
           <div className="flex items-center gap-6 mb-8">
             <div className="w-24 h-24 rounded-full bg-slate-800 text-white flex items-center justify-center text-3xl font-bold">
-              A
+              {username.charAt(0).toUpperCase()}
             </div>
 
             <div>
               <h2 className="text-2xl font-bold">
-                Anmol Prajapati
+                {username}
               </h2>
 
               <p className="text-gray-600">
@@ -33,10 +41,11 @@ function Profile() {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-slate-50 p-4 rounded-lg">
               <p className="font-semibold">
-                Email
+                Username
               </p>
+
               <p className="text-gray-600">
-                anmol@example.com
+                {username}
               </p>
             </div>
 
@@ -44,8 +53,9 @@ function Profile() {
               <p className="font-semibold">
                 Role
               </p>
-              <p className="text-gray-600">
-                Admin
+
+              <p className="text-gray-600 capitalize">
+                {role}
               </p>
             </div>
 
@@ -53,6 +63,7 @@ function Profile() {
               <p className="font-semibold">
                 Account Status
               </p>
+
               <p className="text-green-600">
                 Active
               </p>
@@ -62,6 +73,7 @@ function Profile() {
               <p className="font-semibold">
                 Access Type
               </p>
+
               <p className="text-gray-600">
                 JWT Authenticated
               </p>

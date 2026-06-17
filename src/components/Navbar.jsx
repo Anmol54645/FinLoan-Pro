@@ -3,9 +3,14 @@ import { useNavigate } from "react-router-dom";
 function Navbar({ setSearchTerm }) {
   const navigate = useNavigate();
 
+  const username =
+    localStorage.getItem("username") || "User";
+
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
 
     alert("Logout Successful");
 
@@ -25,11 +30,11 @@ function Navbar({ setSearchTerm }) {
 
       <div className="flex items-center gap-4">
         <span className="font-medium">
-          Anmol Prajapati
+          {username}
         </span>
 
         <div className="w-10 h-10 bg-slate-800 rounded-full text-white flex items-center justify-center">
-          A
+          {username.charAt(0).toUpperCase()}
         </div>
 
         <button
