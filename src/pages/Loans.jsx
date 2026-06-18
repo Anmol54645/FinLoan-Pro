@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import LoanTable from "../components/LoanTable";
+import API from "../api/loanApi";
 
 function Loans() {
   const [loans, setLoans] = useState([]);
@@ -12,17 +12,7 @@ function Loans() {
 
   const fetchLoans = async () => {
     try {
-      const token = localStorage.getItem("access");
-
-      const response = await axios.get(
-        "https://finloan-pro-backend.onrender.com/api/loans/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const response = await API.get("/loans/");
       setLoans(response.data);
     } catch (error) {
       console.log(error);

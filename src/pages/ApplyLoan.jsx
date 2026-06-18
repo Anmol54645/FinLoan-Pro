@@ -34,9 +34,10 @@ function ApplyLoan() {
     });
 
     alert("Loan Submitted Successfully");
-  } catch (error) {
-    console.log(error);
-  }
+  }catch (error) {
+  console.log("STATUS:", error.response?.status);
+  console.log("DATA:", error.response?.data);
+}
 };
 
   return (
