@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ function Login() {
       console.log("Token Response:", response.data);
       console.log("User Response:", userResponse.data);
 
-      alert("Login Successful");
+     toast.success("Login Successful");
 
       if (userResponse.data.role === "admin") {
         navigate("/admin");
@@ -74,7 +75,7 @@ function Login() {
 
     } catch (error) {
       console.error(error);
-      alert("Invalid Credentials");
+      toast.error("Invalid Credentials");
     }
   };
 

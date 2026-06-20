@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Navbar({ setSearchTerm }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function Navbar({ setSearchTerm }) {
     localStorage.removeItem("role");
     localStorage.removeItem("username");
 
-    alert("Logout Successful");
+    toast.success("Logout Successful");
 
     navigate("/login");
   };

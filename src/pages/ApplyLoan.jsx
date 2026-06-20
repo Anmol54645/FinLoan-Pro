@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addLoan } from "../redux/loanSlice";
 import Sidebar from "../components/Sidebar";
 import API from "../api/loanApi";
+import toast from "react-hot-toast";
 
 function ApplyLoan() {
-  const dispatch = useDispatch();
-
   const [formData, setFormData] = useState({
     name: "",
     amount: "",
@@ -21,24 +18,32 @@ function ApplyLoan() {
     });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    await API.post("/loans/", {
-      name: formData.name,
-      amount: formData.amount,
-      loan_type: formData.loanType,
-      tenure: formData.tenure,
-      status: "Pending",
-    });
+    try {
+      await API.post("/loans/", {
+        name: formData.name,
+        amount: formData.amount,
+        loan_type: formData.loanType,
+        tenure: formData.tenure,
+        status: "Pending",
+      });
 
-    alert("Loan Submitted Successfully");
-  }catch (error) {
-  console.log("STATUS:", error.response?.status);
-  console.log("DATA:", error.response?.data);
-}
-};
+      toast.success("Loan Submitted Successfully");
+
+      setFormData({
+        name: "",
+        amount: "",
+        loanType: "",
+        tenure: "",
+      });
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to Submit Loan");
+    }
+  };
 
   return (
     <div className="flex bg-slate-100 min-h-screen">
