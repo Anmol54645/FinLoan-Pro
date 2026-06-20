@@ -21,14 +21,26 @@ function ApplyLoan() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(
+      "TOKEN =",
+      localStorage.getItem("access")
+    );
+
+    console.log(
+      "API URL =",
+      import.meta.env.VITE_API_URL
+    );
+
     try {
-      await API.post("/loans/", {
+      const response = await API.post("/loans/", {
         name: formData.name,
         amount: formData.amount,
         loan_type: formData.loanType,
         tenure: formData.tenure,
         status: "Pending",
       });
+
+      console.log("SUCCESS =", response.data);
 
       toast.success("Loan Submitted Successfully");
 
@@ -40,7 +52,10 @@ function ApplyLoan() {
       });
 
     } catch (error) {
-      console.log(error);
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
+      console.log("ERROR:", error);
+
       toast.error("Failed to Submit Loan");
     }
   };

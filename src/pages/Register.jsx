@@ -1,6 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API from "../api/loanApi";
+import toast from "react-hot-toast";
 
 function Register() {
   const navigate = useNavigate();
@@ -18,22 +19,23 @@ function Register() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      await axios.post(
-        "https://finloan-pro-backend.onrender.com/api/register/",
-        formData
-      );
+  try {
+    await API.post("/register/", formData);
 
-      alert("Registration Successful");
-      navigate("/login");
-    } catch (error) {
-  console.log(error.response?.data);
-  alert(JSON.stringify(error.response?.data));
-}
-  };
+    toast.success("Registration Successful");
+
+    navigate("/login");
+  } catch (error) {
+    console.log(error.response?.data);
+
+    toast.error(
+      JSON.stringify(error.response?.data)
+    );
+  }
+};
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-slate-100">
