@@ -11,6 +11,8 @@ import Register from "./pages/Register";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+import EmiCalculator from "./pages/EmiCalculator";
+import LoanDetails from "./pages/LoanDetails";
 
 function App() {
   return (
@@ -79,6 +81,24 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/emi-calculator"
+  element={
+    <ProtectedRoute>
+      <EmiCalculator />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/loan/:id"
+  element={
+    <ProtectedRoute>
+      <LoanDetails />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </>
   );

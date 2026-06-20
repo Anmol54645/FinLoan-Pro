@@ -4,6 +4,7 @@ import API from "../api/loanApi";
 
 function Admin() {
   const [loans, setLoans] = useState([]);
+  const [interestRates, setInterestRates] = useState({});
 
   useEffect(() => {
     fetchLoans();
@@ -18,7 +19,19 @@ function Admin() {
     }
   };
 
-  const updateStatus = async (id, status) => {
+  const updateStatus = async (
+    id,
+    status,
+    interestRate = 0
+  ) => {
+
+    if (
+  status === "Approved" &&
+  (!interestRate || Number(interestRate) <= 0)
+) {
+  alert("Please enter a valid interest rate");
+  return;
+}
     try {
       const loan = loans.find(
         (item) => item.id === id
@@ -27,6 +40,7 @@ function Admin() {
       await API.patch(`/loans/${id}/`, {
         ...loan,
         status,
+        interest_rate: Number(interestRate),
       });
 
       fetchLoans();
@@ -36,20 +50,20 @@ function Admin() {
   };
 
   const deleteLoan = async (id) => {
-  try {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this loan?"
-    );
+    try {
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this loan?"
+      );
 
-    if (!confirmDelete) return;
+      if (!confirmDelete) return;
 
-    await API.delete(`/loans/${id}/`);
+      await API.delete(`/loans/${id}/`);
 
-    fetchLoans();
-  } catch (error) {
-    console.log(error);
-  }
-};
+      fetchLoans();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const exportCSV = () => {
     const headers = [
@@ -59,6 +73,7 @@ function Admin() {
       "Loan Type",
       "Tenure",
       "Status",
+      "Interest Rate",
     ];
 
     const rows = loans.map((loan) => [
@@ -68,6 +83,7 @@ function Admin() {
       loan.loan_type,
       loan.tenure,
       loan.status,
+      loan.interest_rate,
     ]);
 
     const csvContent = [
@@ -75,12 +91,9 @@ function Admin() {
       ...rows.map((row) => row.join(",")),
     ].join("\n");
 
-    const blob = new Blob(
-      [csvContent],
-      {
-        type: "text/csv;charset=utf-8;",
-      }
-    );
+    const blob = new Blob([csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
 
     const url =
       window.URL.createObjectURL(blob);
@@ -92,9 +105,7 @@ function Admin() {
     link.download = "loans_report.csv";
 
     document.body.appendChild(link);
-
     link.click();
-
     document.body.removeChild(link);
   };
 
@@ -133,6 +144,10 @@ function Admin() {
                 </th>
 
                 <th className="text-left p-3">
+                  Interest %
+                </th>
+
+                <th className="text-left p-3">
                   Action
                 </th>
               </tr>
@@ -157,11 +172,31 @@ function Admin() {
                   </td>
 
                   <td className="p-3">
+                    <input
+                      type="number"
+                      step="0.1"
+                      placeholder="Rate"
+                      value={
+                        interestRates[loan.id] || ""
+                      }
+                      onChange={(e) =>
+                        setInterestRates({
+                          ...interestRates,
+                          [loan.id]:
+                            e.target.value,
+                        })
+                      }
+                      className="border p-2 rounded w-24"
+                    />
+                  </td>
+
+                  <td className="p-3">
                     <button
                       onClick={() =>
                         updateStatus(
                           loan.id,
-                          "Approved"
+                          "Approved",
+                          interestRates[loan.id]
                         )
                       }
                       className="bg-green-500 text-white px-3 py-1 rounded mr-2"
@@ -182,12 +217,13 @@ function Admin() {
                     </button>
 
                     <button
-  onClick={() => deleteLoan(loan.id)}
-  className="bg-gray-700 text-white px-3 py-1 rounded ml-2"
->
-  Delete
-</button>
-
+                      onClick={() =>
+                        deleteLoan(loan.id)
+                      }
+                      className="bg-gray-700 text-white px-3 py-1 rounded ml-2"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

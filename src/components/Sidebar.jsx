@@ -33,6 +33,12 @@ function Sidebar() {
           </Link>
         </li>
 
+        <li>
+  <Link to="/emi-calculator">
+    EMI Calculator
+  </Link>
+</li>
+
        {role === "admin" && (
   <li>
     <Link to="/admin">Admin</Link>
